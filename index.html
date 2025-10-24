@@ -1,14 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./dist/output.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <title>Document</title>
+    <title>To-Do Liste - Ibrahim X Mory</title>
 </head>
-<body>
-    <h1 class="text-4xl text-blue-600 font-bold py-8">Hello Tailwind + Alpine</h1>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white py-4 px-6 shadow-md">
+        <h1 class="text-2xl font-bold">Ibrahim X Mory</h1>
+    </header>
 
+    <!-- Container Principal -->
+    <main class="flex h-screen">
+        <!-- Sidebar Gauche -->
+        <aside class="w-1/4 bg-white border-r border-gray-200 p-6">
+            <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium mb-6">
+                + Ajouter une tâche
+            </button>
+
+            <!-- Formulaire -->
+            <form class="space-y-4">
+                <div>
+                    <label for="titre" class="block text-sm font-medium text-gray-700 mb-2">Titre</label>
+                    <input 
+                        type="text" 
+                        id="titre" 
+                        name="titre" 
+                        placeholder="Nom de la tâche"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                </div>
+
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea 
+                        id="description" 
+                        name="description" 
+                        rows="4"
+                        placeholder="Décrivez la tâche..."
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium">
+                    Créer la tâche
+                </button>
+            </form>
+        </aside>
+
+        <!-- Section Principale Droite -->
+        <section class="flex-1 flex flex-col p-6 overflow-hidden">
+            <!-- Tableau de bord -->
+            <section class="bg-white rounded-lg shadow-sm p-4 mb-6 flex items-center gap-4">
+                <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option>Toutes les tâches</option>
+                    <option>Prioritaires</option>
+                    <option>Non prioritaires</option>
+                </select>
+
+                <input 
+                    type="text" 
+                    placeholder="Rechercher des tâches..."
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </section>
+
+            <!-- Section des 3 Colonnes -->
+            <section class="flex gap-4 flex-1 overflow-hidden">
+                <!-- Colonne À faire -->
+                <article class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800">À faire (3 tâches)</h2>
+                        <button class="text-gray-600 hover:text-gray-800 font-bold">•••</button>
+                    </div>
+
+                    <!-- Liste des tâches avec scroll -->
+                    <div class="space-y-3 overflow-y-auto flex-1">
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h3 class="font-medium text-gray-900 mb-2">Tâche 1</h3>
+                            <p class="text-sm text-gray-600 mb-3">Description de la tâche</p>
+                            <div class="flex gap-2">
+                                <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                <button class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Priorité</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h3 class="font-medium text-gray-900 mb-2">Tâche 2</h3>
+                            <p class="text-sm text-gray-600 mb-3">Une autre description</p>
+                            <div class="flex gap-2">
+                                <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                <button class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Priorité</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h3 class="font-medium text-gray-900 mb-2">Tâche 3</h3>
+                            <p class="text-sm text-gray-600 mb-3">Encore une tâche à faire</p>
+                            <div class="flex gap-2">
+                                <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                <button class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Priorité</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h3 class="font-medium text-gray-900 mb-2">Tâche 3</h3>
+                            <p class="text-sm text-gray-600 mb-3">Encore une tâche à faire</p>
+                            <div class="flex gap-2">
+                                <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                <button class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Priorité</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h3 class="font-medium text-gray-900 mb-2">Tâche 3</h3>
+                            <p class="text-sm text-gray-600 mb-3">Encore une tâche à faire</p>
+                            <div class="flex gap-2">
+                                <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                <button class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Priorité</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h3 class="font-medium text-gray-900 mb-2">Tâche 3</h3>
+                            <p class="text-sm text-gray-600 mb-3">Encore une tâche à faire</p>
+                            <div class="flex gap-2">
+                                <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                <button class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Priorité</button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Colonne En Cours -->
+                <article class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800">En Cours (1 tâche)</h2>
+                        <button class="text-gray-600 hover:text-gray-800 font-bold">•••</button>
+                    </div>
+
+                    <div class="space-y-3 overflow-y-auto flex-1">
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h3 class="font-medium text-gray-900 mb-2">Tâche en cours</h3>
+                            <p class="text-sm text-gray-600 mb-3">Je travaille dessus maintenant</p>
+                            <div class="flex gap-2">
+                                <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                <button class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Priorité</button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Colonne Terminées -->
+                <article class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800">Terminées (2 tâches)</h2>
+                        <button class="text-gray-600 hover:text-gray-800 font-bold">•••</button>
+                    </div>
+
+                    <div class="space-y-3 overflow-y-auto flex-1">
+                        <div class="bg-white rounded-lg p-4 shadow-sm opacity-75">
+                            <h3 class="font-medium text-gray-900 mb-2 line-through">Tâche terminée 1</h3>
+                            <p class="text-sm text-gray-600 mb-3">C'est fait !</p>
+                            <div class="flex gap-2">
+                                <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                <button class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Priorité</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg p-4 shadow-sm opacity-75">
+                            <h3 class="font-medium text-gray-900 mb-2 line-through">Tâche terminée 2</h3>
+                            <p class="text-sm text-gray-600 mb-3">Celle-là aussi !</p>
+                            <div class="flex gap-2">
+                                <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                <button class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Priorité</button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </section>
+    </main>
 </body>
 </html>
