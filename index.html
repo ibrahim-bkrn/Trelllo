@@ -9,14 +9,11 @@
     <title>To-Do Liste - Ibrahim X Mory</title>
 </head>
 <body class="bg-gray-50">
-    <!-- Header -->
     <header class="bg-blue-600 text-white py-4 px-6 shadow-md">
         <h1 class="text-2xl font-bold font-arial">Ibrahim X Mory</h1>
     </header>
 
-    <!-- Container Principal -->
     <main class="flex h-screen" x-data="TODOLISTE">
-        <!-- Sidebar Gauche -->
         <aside class="w-1/4 bg-white border-r border-gray-200 p-6">
             <button 
                 class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium mb-6"
@@ -25,13 +22,12 @@
                 + Ajouter une tâche
             </button>
 
-            <!-- Formulaire -->
             <form class="space-y-4" x-show="FormAjtTache" @submit.prevent="
                 if ($refs.titre.value.trim() === '' || $refs.description.value.trim() === '') {
                     alert('Veuillez remplir tous les champs.');
                     return;
                 }
-                AjoutDeTache(Date.now(), $refs.titre.value.trim(), $refs.description.value.trim(), 'à faire', false);
+                AjoutDeTache(Date.now(), $refs.titre.value.trim(), $refs.description.value.trim(), 'à faire', false, false);
                 FormAjtTache = false;
                 $refs.titre.value = '';
                 $refs.description.value = '';
@@ -75,9 +71,7 @@
                 >Annuler</button>
         </aside>
 
-        <!-- Section Principale Droite -->
         <section class="flex-1 flex flex-col p-6 overflow-hidden">
-            <!-- Tableau de bord -->
             <section class="bg-white rounded-lg shadow-sm p-4 mb-6 flex items-center gap-4">
                 <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option>Toutes les tâches</option>
@@ -88,13 +82,12 @@
                 <input 
                     type="text" 
                     placeholder="Rechercher des tâches..."
+                    x-model="texteRecherche"
                     class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
             </section>
 
-            <!-- Section des 3 Colonnes -->
-            <section class="flex gap-4 flex-1 overflow-hidden">
-                <!-- Colonne À faire -->
+            <section class="flex gap-4 flex-1 overflow-hidden break-words" x-show="texteRecherche === ''">
                 <article 
                     class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col transition-all"
                     @dragover.prevent="$el.classList.add('bg-blue-100', 'border-2', 'border-blue-400')"
@@ -103,20 +96,34 @@
                 >
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-semibold text-gray-800">À faire (<span x-text="TachesAFaire.length"></span> tâches)</h2>
-                        <button class="text-gray-600 hover:text-gray-800 font-bold">•••</button>
+                        <div>
+                            <button class="text-gray-600 hover:text-gray-800 font-bold" @click="menuOptions = !menuOptions">•••</button>
+                            <div x-transition
+                                    x-show="menuOptions"
+                                    @click.outside="menuOptions = false"
+                                    class="absolute bg-white border border-gray-300 rounded-lg shadow-md"
+                                >
+                                    <ul>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 1</li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 2</li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 3</li>
+                                    </ul>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Liste des tâches avec scroll -->
                     <div class="space-y-3 overflow-y-auto flex-1">
                         <template x-for="tache in TachesAFaire" :key="tache.id">
                             <div 
-                                class="bg-white rounded-lg p-4 shadow-sm cursor-move hover:shadow-lg transition-shadow" 
+                                class="bg-white rounded-lg p-4 shadow-sm cursor-move hover:shadow-lg transition-shadow w-full " 
                                 draggable="true"
                                 @dragstart="onDragStart(tache)"
                             >
-                                <h3 class="font-medium text-gray-900 mb-2" x-text="tache.titre"></h3>
-                                <p class="text-sm text-gray-600 mb-3" x-text="tache.description"></p>
+                                <h3 class="font-medium text-gray-900" x-text="tache.titre" x-show="!tache.enmodification"></h3>
+                                <input type="text" class="font-medium text-gray-900 mb-2" x-show="tache.enmodification" x-model="tache.titre">
+                                <p class="text-sm text-gray-600 mb-3" x-text="tache.description" x-show="!tache.enmodification" ></p>
+                                <textarea class="text-sm text-gray-600 mb-3 resize-none w-full" x-show="tache.enmodification" x-model="tache.description" rows="h-auto"></textarea>
                                 <div class="flex gap-2">
-                                    <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                    <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200" @click="tache.enmodification = !tache.enmodification">Modifier</button>
                                     <button 
                                         x-bind:class="tache.Priorité ? 'text-xs bg-red-700 text-amber-50 px-3 py-1 rounded' : 'text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200'" 
                                         @click="tache.Priorité = !tache.Priorité"
@@ -126,13 +133,13 @@
                                     <button @click="supprimerTache(tache.id)">
                                         <img src="poubelle-de-recyclage.png" alt="Supprimer" class="w-5">
                                     </button>
+                                    <button class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200" x-show="tache.enmodification" @click="tache.enmodification = false">Confirmer</button>
                                 </div>
                             </div>
                         </template>
                     </div>
                 </article>
 
-                <!-- Colonne En Cours -->
                 <article 
                     class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col transition-all"
                     @dragover.prevent="$el.classList.add('bg-blue-100', 'border-2', 'border-blue-400')"
@@ -141,7 +148,20 @@
                 >
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-semibold text-gray-800">En Cours (<span x-text="TachesEnCours.length"></span> tâche)</h2>
-                        <button class="text-gray-600 hover:text-gray-800 font-bold">•••</button>
+                        <div>
+                            <button class="text-gray-600 hover:text-gray-800 font-bold" @click="menuOptions2 = !menuOptions2">•••</button>
+                            <div x-transition
+                                    x-show="menuOptions2"
+                                    @click.outside="menuOptions2 = false"
+                                    class="absolute bg-white border border-gray-300 rounded-lg shadow-md"
+                                >
+                                    <ul>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 1</li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 2</li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 3</li>
+                                    </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="space-y-3 overflow-y-auto flex-1">
                         <template x-for="tache in TachesEnCours" :key="tache.id">
@@ -150,10 +170,12 @@
                                 draggable="true"
                                 @dragstart="onDragStart(tache)"
                             >
-                                <h3 class="font-medium text-gray-900 mb-2" x-text="tache.titre"></h3>
-                                <p class="text-sm text-gray-600 mb-3" x-text="tache.description"></p>
+                                <h3 class="font-medium text-gray-900 mb-2" x-text="tache.titre" x-show="!tache.enmodification"></h3>
+                                <input type="text" class="font-medium text-gray-900 mb-2" x-show="tache.enmodification" x-model="tache.titre">
+                                <p class="text-sm text-gray-600 mb-3" x-text="tache.description" x-show="!tache.enmodification"></p>
+                                <textarea class="text-sm text-gray-600 mb-3 resize-none w-full" x-show="tache.enmodification" x-model="tache.description"></textarea>
                                 <div class="flex gap-2">
-                                    <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                    <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200" @click="tache.enmodification = !tache.enmodification">Modifier</button>
                                     <button 
                                         x-bind:class="tache.Priorité ? 'text-xs bg-red-700 text-amber-50 px-3 py-1 rounded' : 'text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200'" 
                                         @click="tache.Priorité = !tache.Priorité"
@@ -163,13 +185,13 @@
                                     <button @click="supprimerTache(tache.id)">
                                         <img src="poubelle-de-recyclage.png" alt="Supprimer" class="w-5">
                                     </button>
+                                    <button class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200" x-show="tache.enmodification" @click="tache.enmodification = false">Confirmer</button>
                                 </div>
                             </div>
                         </template>
                     </div>
                 </article>
 
-                <!-- Colonne Terminées -->
                 <article 
                     class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col transition-all"
                     @dragover.prevent="$el.classList.add('bg-blue-100', 'border-2', 'border-blue-400')"
@@ -178,7 +200,20 @@
                 >
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-semibold text-gray-800">Terminées (<span x-text="TachesTerminee.length"></span> tâches)</h2>
-                        <button class="text-gray-600 hover:text-gray-800 font-bold">•••</button>
+                        <div>
+                            <button class="text-gray-600 hover:text-gray-800 font-bold" @click="menuOptions3 = !menuOptions3">•••</button>
+                            <div x-transition
+                                    x-show="menuOptions3"
+                                    @click.outside="menuOptions3 = false"
+                                    class="absolute bg-white border border-gray-300 rounded-lg shadow-md right-5"
+                                >
+                                    <ul>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 1</li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 2</li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 3</li>
+                                    </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="space-y-3 overflow-y-auto flex-1">
                         <template x-for="tache in TachesTerminee" :key="tache.id">
@@ -206,24 +241,79 @@
                     </div>
                 </article>
             </section>
+
+            <section class="flex-1 overflow-hidden" x-show="texteRecherche !== ''">
+                <div class="bg-white rounded-lg p-4 h-full overflow-y-auto">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Résultats de recherche (<span x-text="tachesRecherchees.length"></span>)</h2>
+                    <div class="space-y-3">
+                        <template x-for="tache in tachesRecherchees" :key="tache.id">
+                            <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-medium text-gray-900" x-text="tache.titre"></h3>
+                                    <span class="text-xs px-2 py-1 rounded" 
+                                          :class="tache.statut === 'à faire' ? 'bg-blue-100 text-blue-700' : 
+                                                  tache.statut === 'en cours' ? 'bg-yellow-100 text-yellow-700' : 
+                                                  'bg-green-100 text-green-700'"
+                                          x-text="tache.statut">
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3" x-text="tache.description"></p>
+                                <div class="flex gap-2">
+                                    <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Modifier</button>
+                                    <button 
+                                        x-bind:class="tache.Priorité ? 'text-xs bg-red-700 text-amber-50 px-3 py-1 rounded' : 'text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200'" 
+                                        @click="tache.Priorité = !tache.Priorité"
+                                    >
+                                        Priorité
+                                    </button>
+                                    <button @click="supprimerTache(tache.id)">
+                                        <img src="poubelle-de-recyclage.png" alt="Supprimer" class="w-5">
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                        <div x-show="tachesRecherchees.length === 0" class="text-center text-gray-500 py-8">
+                            Aucune tâche trouvée pour "<span x-text="texteRecherche"></span>"
+                        </div>
+                    </div>
+                </div>
+            </section>
         </section>
     </main>
 
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('TODOLISTE', () => ({
-                    FormAjtTache : false,
-                    FormModifTache : false,
+                    FormAjtTache: false,
+                    FormModifTache: false,
                     tacheEnCoursDeDrag: null, 
-                    
+                    menuOptions: false,
+                    menuOptions2: false,
+                    menuOptions3: false,
+                    ModePrioritaire: false,
+                    texteRecherche: '',
                     TachesAFaire: [
-                        {id: 1, titre: "tache mory", description: "kjdbnodsnoqvndovdo", statut: "à faire", Priorité: false},
-                        {id: 2, titre:"tache ibrahim", description: "immature", statut: "à faire", Priorité: false}
+                        {id: 1, titre: "tache mory", description: "kjdbnodsnoqvndovdo", statut: "à faire", Priorité: false, enmodification: false},
+                        {id: 2, titre: "tache ibrahim", description: "immature", statut: "à faire", Priorité: false, enmodification: false}
                     ],
                     TachesEnCours: [],
                     TachesTerminee: [],
                     
+                    get tachesRecherchees() {
+                        if (!this.texteRecherche || this.texteRecherche.trim() === '') {
+                            return [];
+                        }
+                        
+                        const recherche = this.texteRecherche.toLowerCase();
+                        const toutesLesTaches = [...this.TachesAFaire, ...this.TachesEnCours, ...this.TachesTerminee];
+                        
+                        return toutesLesTaches.filter(tache => 
+                            tache.titre.toLowerCase().startsWith(recherche)
+                        );
+                    },
+                    
                     onDragStart(tache) {
+                        if(tache.enmodification === true) return;
                         this.tacheEnCoursDeDrag = tache;
                     },
                     
@@ -231,7 +321,6 @@
                         if (!this.tacheEnCoursDeDrag) return;
                         
                         const tache = this.tacheEnCoursDeDrag;
-                        
                         
                         this.TachesAFaire = this.TachesAFaire.filter(t => t.id !== tache.id);
                         this.TachesEnCours = this.TachesEnCours.filter(t => t.id !== tache.id);
@@ -254,30 +343,21 @@
                         this.tacheEnCoursDeDrag = null;
                     },
                     
-                    AjoutDeTache(id, titre, description, statut, Priorité){
+                    AjoutDeTache(id, titre, description, statut, Priorité, enmodification) {
                         switch(statut){
                             case 'à faire':
-                                this.TachesAFaire.push({id,titre,description,statut, Priorité});
+                                this.TachesAFaire.push({id, titre, description, statut, Priorité, enmodification});
                                 break;
                             case 'en cours':
-                                this.TachesEnCours.push({id,titre,description,statut, Priorité});
+                                this.TachesEnCours.push({id, titre, description, statut, Priorité, enmodification});
                                 break;
                             case 'terminée':
-                                this.TachesTerminee.push({id,titre,description,statut, Priorité});
+                                this.TachesTerminee.push({id, titre, description, statut, Priorité, enmodification});
                                 break;
                         }
                     },
                     
-                    modifierTache(id, newTitre, newDesc, tableau){
-                        for (tache in tableau){
-                            if (tache.id == id){
-                                tache.titre = newTitre;
-                                tache.desciption = newDescription;
-                            } 
-                        } 
-                    },
-                    
-                    supprimerTache(id){
+                    supprimerTache(id) {
                         this.TachesAFaire = this.TachesAFaire.filter(t => t.id !== id);
                         this.TachesEnCours = this.TachesEnCours.filter(t => t.id !== id);
                         this.TachesTerminee = this.TachesTerminee.filter(t => t.id !== id);
