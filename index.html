@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    
 
     <title>To-Do Liste - Ibrahim X Mory</title>
 </head>
@@ -13,10 +15,10 @@
         <h1 class="text-2xl font-bold font-arial">Ibrahim X Mory</h1>
     </header>
 
-    <main class="flex h-screen" x-data="TODOLISTE">
-        <aside class="w-1/4 bg-white border-r border-gray-200 p-6">
+    <main class="flex flex-col md:flex-row h-screen" x-data="TODOLISTE">
+        <aside class="w-full md:w-1/4 bg-white border-b md:border-r border-gray-200 p-4 md:p-6">
             <button 
-                class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium mb-6"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium mb-4 md:mb-6"
                 @click="FormAjtTache = true"
             >
                 + Ajouter une tâche
@@ -72,8 +74,8 @@
         </aside>
 
         <section class="flex-1 flex flex-col p-6 overflow-hidden">
-            <section class="bg-white rounded-lg shadow-sm p-4 mb-6 flex items-center gap-4">
-                <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <section class="bg-white rounded-lg shadow-sm p-3 md:p-4 mb-4 md:mb-6 flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4">
+                <select class="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option>Toutes les tâches</option>
                     <option>Prioritaires</option>
                     <option>Non prioritaires</option>
@@ -83,13 +85,13 @@
                     type="text" 
                     placeholder="Rechercher des tâches..."
                     x-model="texteRecherche"
-                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full md:flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
             </section>
 
-            <section class="flex gap-4 flex-1 overflow-hidden break-words" x-show="texteRecherche === ''">
+            <section class="flex flex-col lg:flex-row gap-4 flex-1 overflow-y-auto lg:overflow-hidden break-words" x-show="texteRecherche === ''">
                 <article 
-                    class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col transition-all"
+                    class="flex-1 bg-gray-100 rounded-lg p-3 md:p-4 flex flex-col transition-all min-h-[300px] lg:min-h-0"
                     @dragover.prevent="$el.classList.add('bg-blue-100', 'border-2', 'border-blue-400')"
                     @dragleave="$el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
                     @drop="onDrop('à faire'); $el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
@@ -141,7 +143,7 @@
                 </article>
 
                 <article 
-                    class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col transition-all"
+                    class="flex-1 bg-gray-100 rounded-lg p-3 md:p-4 flex flex-col transition-all min-h-[300px] lg:min-h-0"
                     @dragover.prevent="$el.classList.add('bg-blue-100', 'border-2', 'border-blue-400')"
                     @dragleave="$el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
                     @drop="onDrop('en cours'); $el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
@@ -193,7 +195,7 @@
                 </article>
 
                 <article 
-                    class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col transition-all"
+                    class="flex-1 bg-gray-100 rounded-lg p-3 md:p-4 flex flex-col transition-all min-h-[300px] lg:min-h-0"
                     @dragover.prevent="$el.classList.add('bg-blue-100', 'border-2', 'border-blue-400')"
                     @dragleave="$el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
                     @drop="onDrop('terminée'); $el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
@@ -292,12 +294,10 @@
                     menuOptions3: false,
                     ModePrioritaire: false,
                     texteRecherche: '',
-                    TachesAFaire: [
-                        {id: 1, titre: "tache mory", description: "kjdbnodsnoqvndovdo", statut: "à faire", Priorité: false, enmodification: false},
-                        {id: 2, titre: "tache ibrahim", description: "immature", statut: "à faire", Priorité: false, enmodification: false}
-                    ],
-                    TachesEnCours: [],
-                    TachesTerminee: [],
+                    TachesAFaire:Alpine.$persist([]),
+                    TachesEnCours: Alpine.$persist([]),
+                    TachesTerminee: Alpine.$persist([]),
+
                     
                     get tachesRecherchees() {
                         if (!this.texteRecherche || this.texteRecherche.trim() === '') {
