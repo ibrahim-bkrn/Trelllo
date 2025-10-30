@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
-
-   
-
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    
 
     <title>To-Do Liste - Ibrahim X Mory</title>
 </head>
@@ -17,18 +15,10 @@
         <h1 class="text-2xl font-bold font-arial">Ibrahim X Mory</h1>
     </header>
 
-<<<<<<< HEAD
-    <main class="flex h-screen" x-data="TODOLISTE">
-=======
-    <!-- Container Principal -->
-    <main class="flex h-screen" x-data="TODOLISTE()">
-    
-        
-        <!-- Sidebar Gauche -->
->>>>>>> 95db4a2 (WIP: mes modifs locales)
-        <aside class="w-1/4 bg-white border-r border-gray-200 p-6">
+    <main class="flex flex-col md:flex-row h-screen" x-data="TODOLISTE">
+        <aside class="w-full md:w-1/4 bg-white border-b md:border-r border-gray-200 p-4 md:p-6">
             <button 
-                class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium mb-6"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium mb-4 md:mb-6"
                 @click="FormAjtTache = true"
             >
                 + Ajouter une tâche
@@ -84,8 +74,8 @@
         </aside>
 
         <section class="flex-1 flex flex-col p-6 overflow-hidden">
-            <section class="bg-white rounded-lg shadow-sm p-4 mb-6 flex items-center gap-4">
-                <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <section class="bg-white rounded-lg shadow-sm p-3 md:p-4 mb-4 md:mb-6 flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4">
+                <select class="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option>Toutes les tâches</option>
                     <option>Prioritaires</option>
                     <option>Non prioritaires</option>
@@ -95,13 +85,13 @@
                     type="text" 
                     placeholder="Rechercher des tâches..."
                     x-model="texteRecherche"
-                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full md:flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
             </section>
 
-            <section class="flex gap-4 flex-1 overflow-hidden break-words" x-show="texteRecherche === ''">
+            <section class="flex flex-col lg:flex-row gap-4 flex-1 overflow-y-auto lg:overflow-hidden break-words" x-show="texteRecherche === ''">
                 <article 
-                    class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col transition-all"
+                    class="flex-1 bg-gray-100 rounded-lg p-3 md:p-4 flex flex-col transition-all min-h-[300px] lg:min-h-0"
                     @dragover.prevent="$el.classList.add('bg-blue-100', 'border-2', 'border-blue-400')"
                     @dragleave="$el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
                     @drop="onDrop('à faire'); $el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
@@ -123,10 +113,6 @@
                             </div>
                         </div>
                     </div>
-<<<<<<< HEAD
-=======
-                    <!-- Liste des tâches avec scroll -->
->>>>>>> 95db4a2 (WIP: mes modifs locales)
                     <div class="space-y-3 overflow-y-auto flex-1">
                         <template x-for="tache in TachesAFaire" :key="tache.id">
                             <div 
@@ -134,17 +120,10 @@
                                 draggable="true"
                                 @dragstart="onDragStart(tache)"
                             >
-<<<<<<< HEAD
                                 <h3 class="font-medium text-gray-900" x-text="tache.titre" x-show="!tache.enmodification"></h3>
                                 <input type="text" class="font-medium text-gray-900 mb-2" x-show="tache.enmodification" x-model="tache.titre">
                                 <p class="text-sm text-gray-600 mb-3" x-text="tache.description" x-show="!tache.enmodification" ></p>
                                 <textarea class="text-sm text-gray-600 mb-3 resize-none w-full" x-show="tache.enmodification" x-model="tache.description" rows="h-auto"></textarea>
-=======
-                                <h3 class="font-medium text-gray-900 mb-2" x-text="tache.titre" x-show="!tache.enmodification"></h3>
-                                <input id="nvTitre" type="text" class="font-medium text-gray-900 mb-2" x-show="tache.enmodification" x-model="tache.titre">
-                                <p class="text-sm text-gray-600 mb-3" x-text="tache.description" x-show="!tache.enmodification"></p>
-                                <textarea id="nvDesc" class="text-sm text-gray-600 mb-3 resize-none w-full" x-show="tache.enmodification" x-model="tache.description"></textarea>
->>>>>>> 95db4a2 (WIP: mes modifs locales)
                                 <div class="flex gap-2">
                                     <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200" @click="tache.enmodification = !tache.enmodification">Modifier</button>
                                     <button 
@@ -156,17 +135,7 @@
                                     <button @click="supprimerTache(tache.id)">
                                         <img src="poubelle-de-recyclage.png" alt="Supprimer" class="w-5">
                                     </button>
-<<<<<<< HEAD
                                     <button class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200" x-show="tache.enmodification" @click="tache.enmodification = false">Confirmer</button>
-=======
-                                    <button class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200" x-show="tache.enmodification" @click="
-                                        tache.enmodification = false; 
-                                        tache.titre = $refs.nvTitre.value; 
-                                        $refs.nvDesc.value;  
-                                        $refs.nvTitre.value = '';
-                                        $refs.nvDesc.value = '';
-                                        ">Confirmer</button>
->>>>>>> 95db4a2 (WIP: mes modifs locales)
                                 </div>
                             </div>
                         </template>
@@ -174,7 +143,7 @@
                 </article>
 
                 <article 
-                    class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col transition-all"
+                    class="flex-1 bg-gray-100 rounded-lg p-3 md:p-4 flex flex-col transition-all min-h-[300px] lg:min-h-0"
                     @dragover.prevent="$el.classList.add('bg-blue-100', 'border-2', 'border-blue-400')"
                     @dragleave="$el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
                     @drop="onDrop('en cours'); $el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
@@ -204,15 +173,9 @@
                                 @dragstart="onDragStart(tache)"
                             >
                                 <h3 class="font-medium text-gray-900 mb-2" x-text="tache.titre" x-show="!tache.enmodification"></h3>
-<<<<<<< HEAD
                                 <input type="text" class="font-medium text-gray-900 mb-2" x-show="tache.enmodification" x-model="tache.titre">
                                 <p class="text-sm text-gray-600 mb-3" x-text="tache.description" x-show="!tache.enmodification"></p>
                                 <textarea class="text-sm text-gray-600 mb-3 resize-none w-full" x-show="tache.enmodification" x-model="tache.description"></textarea>
-=======
-                                <input id="nvTitre" type="text" class="font-medium text-gray-900 mb-2" x-show="tache.enmodification" x-model="tache.titre">
-                                <p class="text-sm text-gray-600 mb-3" x-text="tache.description" x-show="!tache.enmodification"></p>
-                                <textarea id="nvDesc" class="text-sm text-gray-600 mb-3 resize-none w-full" x-show="tache.enmodification" x-model="tache.description"></textarea>
->>>>>>> 95db4a2 (WIP: mes modifs locales)
                                 <div class="flex gap-2">
                                     <button class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200" @click="tache.enmodification = !tache.enmodification">Modifier</button>
                                     <button 
@@ -224,17 +187,7 @@
                                     <button @click="supprimerTache(tache.id)">
                                         <img src="poubelle-de-recyclage.png" alt="Supprimer" class="w-5">
                                     </button>
-<<<<<<< HEAD
                                     <button class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200" x-show="tache.enmodification" @click="tache.enmodification = false">Confirmer</button>
-=======
-                                    <button class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200" x-show="tache.enmodification" @click="
-                                        tache.enmodification = false; 
-                                        tache.titre = $refs.nvTitre.value; 
-                                        $refs.nvDesc.value;  
-                                        $refs.nvTitre.value = '';
-                                        $refs.nvDesc.value = '';
-                                        ">Confirmer</button>
->>>>>>> 95db4a2 (WIP: mes modifs locales)
                                 </div>
                             </div>
                         </template>
@@ -242,7 +195,7 @@
                 </article>
 
                 <article 
-                    class="flex-1 bg-gray-100 rounded-lg p-4 flex flex-col transition-all"
+                    class="flex-1 bg-gray-100 rounded-lg p-3 md:p-4 flex flex-col transition-all min-h-[300px] lg:min-h-0"
                     @dragover.prevent="$el.classList.add('bg-blue-100', 'border-2', 'border-blue-400')"
                     @dragleave="$el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
                     @drop="onDrop('terminée'); $el.classList.remove('bg-blue-100', 'border-2', 'border-blue-400')"
@@ -331,13 +284,8 @@
     </main>
 
     <script>
-
-         document.addEventListener('alpine:init', () => {
-            Alpine.plugin(persist);
-            })
         document.addEventListener('alpine:init', () => {
             Alpine.data('TODOLISTE', () => ({
-<<<<<<< HEAD
                     FormAjtTache: false,
                     FormModifTache: false,
                     tacheEnCoursDeDrag: null, 
@@ -346,24 +294,10 @@
                     menuOptions3: false,
                     ModePrioritaire: false,
                     texteRecherche: '',
-                    TachesAFaire: [
-                        {id: 1, titre: "tache mory", description: "kjdbnodsnoqvndovdo", statut: "à faire", Priorité: false, enmodification: false},
-                        {id: 2, titre: "tache ibrahim", description: "immature", statut: "à faire", Priorité: false, enmodification: false}
-=======
-                    FormAjtTache : $persist(false),
-                    FormModifTache : $persist(false),
-                    FormModifTache : $persist(false),
-                    tacheEnCoursDeDrag: null, 
-                    menuOptions : $persist(false),
-                    menuOptions2 : $persist(false),
-                    menuOptions3 : $persist(false),
-                    TachesAFaire: $persist[
-                        {id: 1, titre: "tache mory", description: "kjdbnodsnoqvndovdo", statut: "à faire", Priorité: false, enmodification: false},
-                        {id: 2, titre:"tache ibrahim", description: "immature", statut: "à faire", Priorité: false, enmodification: false}
->>>>>>> 95db4a2 (WIP: mes modifs locales)
-                    ],
-                    TachesEnCours  : $persist([]),
-                    TachesTerminee : $persist([]),
+                    TachesAFaire:Alpine.$persist([]),
+                    TachesEnCours: Alpine.$persist([]),
+                    TachesTerminee: Alpine.$persist([]),
+
                     
                     get tachesRecherchees() {
                         if (!this.texteRecherche || this.texteRecherche.trim() === '') {
