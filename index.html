@@ -10,7 +10,13 @@
 
     <title>To-Do Liste - Ibrahim X Mory</title>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50"></body>
+    <!-- Un input pour laisser le visiteur unploader une photo de son telephone  -->
+     <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="imageUpload">Importez une image :</label>
+        <input type="file" id="imageUpload" name="imageUpload" accept="image/*" required>
+        <button type="submit">Importer</button>
+
     <header class="bg-blue-600 text-white py-4 px-6 shadow-md">
         <h1 class="text-2xl font-bold font-arial">Ibrahim X Mory</h1>
     </header>
@@ -106,9 +112,8 @@
                                     class="absolute bg-white border border-gray-300 rounded-lg shadow-md"
                                 >
                                     <ul>
-                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 1</li>
-                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 2</li>
-                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 3</li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer"><a href="https://www.linkedin.com/in/ibrahim-boukernafa-8bb85a2b7/">Linkedin Ibrahim</a></li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer"><a href="https://github.com/ibrahim-bkrn">GitHub Ibrahim</a></li>
                                     </ul>
                             </div>
                         </div>
@@ -158,9 +163,8 @@
                                     class="absolute bg-white border border-gray-300 rounded-lg shadow-md"
                                 >
                                     <ul>
-                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 1</li>
-                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 2</li>
-                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Option 3</li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer"><a href="https://www.linkedin.com/in/mory-giovanni-toure-070506187/">Linkedin Mory</a></li>
+                                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer"><a href="https://github.com/MoryGio">Github Mory</a></li>
                                     </ul>
                             </div>
                         </div>
